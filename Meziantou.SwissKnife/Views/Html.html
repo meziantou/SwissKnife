@@ -1,0 +1,41 @@
+﻿<h1>HTML</h1>
+
+<section ng-controller="urlEncodeController">
+    <h2>URL Encode/Decode</h2>
+    <form role="form">
+        <div class="form-group">
+            <textarea class="form-control" ng-model="value"></textarea>
+        </div>
+        <button class="btn btn-default" ng-click="encode()">Encode</button>
+        <button class="btn btn-default" ng-click="pathEncode()">Path Encode</button>
+        <button class="btn btn-default" ng-click="decode()">Decode</button>
+        <pre ng-if="result">{{result}}</pre>
+    </form>
+
+</section>
+
+<section ng-controller="htmlEncodeController">
+    <h2>Html Encode/Decode</h2>
+    <form role="form">
+        <div class="form-group">
+            <textarea class="form-control" ng-model="value"></textarea>
+        </div>
+        <button class="btn btn-default" ng-click="encode()">Encode</button>
+        <button class="btn btn-default" ng-click="decode()">Decode</button>
+        <pre ng-if="result">{{result}}</pre>
+    </form>
+
+</section>
+
+
+<section ng-controller="htmlAttributeEncodeController">
+    <h2>Html Attribute Encode</h2>
+    <form role="form">
+        <div class="form-group">
+            <textarea class="form-control" ng-model="value"></textarea>
+        </div>
+        <button class="btn btn-default" ng-click="encode()">Encode</button>
+        <pre ng-if="result">{{result}}</pre>
+    </form>
+
+</section>

@@ -1,0 +1,22 @@
+﻿<h1>XPath</h1>
+
+<section ng-controller="xpathController">
+    <!--<h2>XPath</h2>-->
+    <form role="form">
+        <div class="form-group">
+            <label class="col-sm-2 control-label">XML</label>
+            <div class="col-md-10"></div>
+            <textarea class="form-control" ng-model="value"></textarea>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">Xpath Query</label>
+            <div class="col-md-10"></div>
+            <input type="text" class="form-control" ng-model="query" />
+        </div>
+        <button class="btn btn-default" ng-click="find()">Find</button>
+        <ul ng-if="result">
+            <li ng-repeat="item in result">{{item}}</li>
+        </ul>
+    </form>
+
+</section>
