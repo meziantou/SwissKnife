@@ -93,9 +93,6 @@
     <Content Include="Content\Site.css.map">
       <DependentUpon>Site.css</DependentUpon>
     </Content>
-    <None Include="Properties\PublishProfiles\a9d89d6e-0ee0-4-231-b9ee - FTP.pubxml" />
-    <None Include="Properties\PublishProfiles\a9d89d6e-0ee0-4-231-b9ee - Web Deploy.pubxml" />
-    <None Include="Properties\PublishProfiles\SwissKnife.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -144,6 +141,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="api\DefaultController.cs" />
+    <Compile Include="api\GuidController.cs" />
     <Compile Include="api\HtmlAttributeController.cs" />
     <Compile Include="api\HtmlController.cs" />
     <Compile Include="api\UrlController.cs" />

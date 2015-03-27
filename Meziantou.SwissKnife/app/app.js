@@ -23,8 +23,17 @@ app.config(function ($routeProvider) {
 
 app.controller('guidGeneratorController', [
     '$scope', '$http', function ($scope, $http) {
-        $scope.newGuid = function () {
-            $http.get('/api/guid/new').success(function (data) {
+        $scope.guidValue = '';
+
+        $scope.newGuid = function() {
+            $http.get('/api/guid/new').success(function(data) {
+                $scope.value = angular.fromJson(data);
+            });
+        };
+
+        $scope.parse = function () {
+            $http.post('/api/guid/parse', JSON.stringify($scope.guidValue)).success(function (data) {
+            //$http.post('/api/guid/parse', '"'+ $scope.guidValue + '"').success(function (data) {
                 $scope.value = angular.fromJson(data);
             });
         }

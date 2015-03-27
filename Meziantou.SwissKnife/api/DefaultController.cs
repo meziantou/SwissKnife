@@ -1,6 +1,4 @@
-﻿using System;
-using System.ServiceModel.Channels;
-using System.Text;
+﻿using System.ServiceModel.Channels;
 using System.Web;
 using System.Web.Http;
 
@@ -25,27 +23,6 @@ namespace Meziantou.SwissKnife.api
             }
 
             return null;
-        }
-    }
-
-    [RoutePrefix("api/guid")]
-    public class GuidController : ApiController
-    {
-        [HttpGet, Route("new")]
-        public string NewGuid()
-        {
-            var newGuid = Guid.NewGuid();
-            string[] formats = { "B", "N", "D", "P" };
-            StringBuilder sb = new StringBuilder();
-
-            foreach (var format in formats)
-            {
-                //sb.Append(format);
-                //sb.Append(": ");
-                sb.AppendLine(newGuid.ToString(format));
-            }
-
-            return sb.ToString();
         }
     }
 }
