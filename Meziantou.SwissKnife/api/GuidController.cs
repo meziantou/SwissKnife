@@ -46,7 +46,7 @@ namespace Meziantou.SwissKnife.api
             if (string.IsNullOrEmpty(text))
                 return value;
 
-            text = text.Replace("-", "").Trim('{', '}');
+            text = text.Replace("-", "").Trim('{', '}', '(', ')');
 
             if (string.Compare(text, "new", StringComparison.CurrentCultureIgnoreCase) == 0 || string.Compare(text, "newid", StringComparison.CurrentCultureIgnoreCase) == 0 || string.Compare(text, "newguid", StringComparison.CurrentCultureIgnoreCase) == 0)
                 return Guid.NewGuid();
