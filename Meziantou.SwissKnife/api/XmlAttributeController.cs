@@ -13,7 +13,7 @@ namespace Meziantou.SwissKnife.api
             return xml.Substring("<Data attr=\"".Length, xml.Length - ("<Data attr=\"".Length + "\" />".Length));
         }
 
-        [HttpPost, Route("Decode")]
+        [HttpPost, Route("decode")]
         public string Decode([FromBody]string value)
         {
             XAttribute attribute = XElement.Parse("<Data attr=\"" + value + "\" />").Attribute("attr");
