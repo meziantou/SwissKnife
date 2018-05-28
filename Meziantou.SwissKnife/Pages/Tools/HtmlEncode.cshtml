@@ -1,0 +1,39 @@
+﻿@page
+@functions {
+    public string Value { get; set; }
+    public string EncodedValue { get; set; }
+
+    public IActionResult OnPostEncode(string value)
+    {
+        Value = value;
+        if (value != null)
+        {
+            EncodedValue = System.Net.WebUtility.UrlEncode(value);
+        }
+        return Page();
+    }
+
+    public IActionResult OnPostDecode(string value)
+    {
+        Value = value;
+        if (value != null)
+        {
+            EncodedValue = System.Net.WebUtility.UrlDecode(value);
+        }
+        return Page();
+    }
+}
+<h1>HTML Encode</h1>
+
+<form method="post">
+    <div class="form-group">
+        <textarea type="text" name="value" class="form-control">@Value</textarea>
+        <button type="submit" asp-page-handler="Encode" class="btn btn-default">Encode</button>
+        <button type="submit" asp-page-handler="Decode" class="btn btn-default">Decode</button>
+    </div>
+</form>
+
+@if (!string.IsNullOrEmpty(EncodedValue))
+{
+<pre><code>@EncodedValue</code></pre>
+}

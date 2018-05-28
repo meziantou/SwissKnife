@@ -1,0 +1,84 @@
+﻿@page
+@functions {
+    public string Xml { get; set; }
+    public string Query { get; set; }
+    public string Message { get; set; }
+    public List<string> Matches { get; set; }
+
+    public IActionResult OnPost(string xml, string query)
+    {
+        Xml = xml;
+        Query = query;
+        if (!string.IsNullOrEmpty(xml) && !string.IsNullOrEmpty(query))
+        {
+            try
+            {
+                var document = new System.Xml.XmlDocument();
+                document.LoadXml(xml);
+                if (document.DocumentElement == null)
+                {
+                    Message = "Invalid XML";
+                }
+                else
+                {
+                    var xmlNodeList = document.DocumentElement.SelectNodes(query);
+
+                    var matches = new List<string>();
+                    foreach (System.Xml.XmlNode xmlElement in xmlNodeList)
+                    {
+                        matches.Add(xmlElement.OuterXml);
+                    }
+                    Matches = matches;
+                }
+            }
+            catch (System.Xml.XmlException)
+            {
+                Message = "Invalid XML";
+            }
+            catch (System.Xml.XPath.XPathException)
+            {
+                Message = "Invalid XPath";
+            }
+        }
+        return Page();
+    }
+}
+<h1>XPath tester</h1>
+
+<form method="post">
+    <div class="form-group">
+        <label>XML</label>
+        <textarea type="text" name="xml" class="form-control">@Xml</textarea>
+
+        <label>Query</label>
+        <input type="text" name="query" class="form-control" value="@Query" />
+        <button type="submit" class="btn btn-primary">Evaluate</button>
+    </div>
+</form>
+
+@if (!string.IsNullOrEmpty(Message))
+{
+<pre>@Message</pre>
+}
+
+@if (Matches != null)
+{
+    <ul class="result">
+        @foreach (var match in Matches)
+        {
+            <li><pre><code class="language-xml">@match</code></pre></li>
+        }
+    </ul>
+}
+
+<style>
+    .result {
+        list-style: none;
+        -webkit-padding-start: 0;
+    }
+</style>
+
+@section Scripts {
+    <link asp-append-version="true" href="~/lib/prismjs/prism.css" rel="stylesheet" />
+    <script asp-append-version="true" src="~/lib/prismjs/prism.js"></script>
+}

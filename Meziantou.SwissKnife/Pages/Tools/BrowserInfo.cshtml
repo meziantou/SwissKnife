@@ -1,0 +1,174 @@
+﻿@page
+@using System.Text
+@functions{
+    string GetRequestHeaders()
+    {
+        var sb = new StringBuilder();
+        foreach (var header in Request.Headers)
+        {
+            foreach (var value in header.Value)
+            {
+                sb.Append(header.Key);
+                sb.Append(": ");
+                sb.Append(value);
+                sb.AppendLine();
+            }
+        }
+
+        return sb.ToString();
+    }
+}
+<script src="~/js/modernizr-custom.js"></script>
+<script>
+    function setContent(id, text) {
+        var element = document.getElementById(id);
+        if (element) {
+            element.textContent = text;
+        }
+    }
+</script>
+<h1>Browser info</h1>
+
+<details open>
+    <summary>Navigator</summary>
+    <pre id="UserAgent"></pre>
+    <script>
+        let navigatorString = "";
+        for (const prop in navigator) {
+            var str = null;
+            var value = navigator[prop];
+            if (typeof value === "string") {
+                str = prop + ": " + value;
+            } else if (typeof value === "boolean") {
+                str = prop + ": " + (value ? "true" : "false");
+            } else if (typeof value === "number") {
+                str = prop + ": " + value;
+            }
+
+            if (str) {
+                if (navigatorString) {
+                    navigatorString += "\r\n";
+                }
+
+                navigatorString += str;
+            }
+        }
+
+        setContent("UserAgent", navigatorString);
+    </script>
+</details>
+
+<details open>
+    <summary>Request Headers</summary>
+    <pre>@GetRequestHeaders()</pre>
+</details>
+
+<details open>
+    <summary>Browser Sizes</summary>
+    <ul>
+        <li>screen: w<span id="ScreenWidth"></span> h<span id="ScreenHeight"></span></li>
+        <li>screen.avail: w<span id="ScreenAvailWidth"></span> h<span id="ScreenAvailHeight"></span></li>
+        <li>window.inner: w<span id="WindowWidth"></span> h<span id="WindowHeight"></span></li>
+        <li>document.body.client: w<span id="DocumentWidth"></span> h<span id="DocumentHeight"></span></li>
+
+        <li>Screen aspect ratio: <span id="ScreenAspectRatio"></span></li>
+        <li>Pixel ratio: <span id="PixelRatio"></span></li>
+        <li>Resolution Dpi: <span id="ResolutionDpi"></span></li>
+		<li>Resolution Dppx: <span id="ResolutionDppx"></span></li>
+		<li>Resolution Dpcm: <span id="ResolutionDpcm"></span></li>
+		
+        <li>Root font size: <span id="RootFontSize"></span></li>
+    </ul>
+    <script>
+        function setSizes() {
+            setContent("ScreenWidth", screen.width);
+            setContent("ScreenHeight", screen.height);
+
+            setContent("WindowWidth", window.innerWidth);
+            setContent("WindowHeight", window.innerHeight);
+
+            setContent("DocumentWidth", document.body.clientWidth);
+            setContent("DocumentHeight", document.body.clientHeight);
+
+            setContent("ScreenAvailWidth", screen.availWidth);
+            setContent("ScreenAvailHeight", screen.availHeight);
+			
+			let screenAspectRatio = screen.width / screen.height;
+			if(screenAspectRatio === 16/10){
+				setContent("ScreenAspectRatio", "16/10");
+			} else if(screenAspectRatio === 16/9){
+				setContent("ScreenAspectRatio", "16/9");
+			} else if(screenAspectRatio === 4/3){
+				setContent("ScreenAspectRatio", "4/3");
+			} else {
+				setContent("ScreenAspectRatio", screenAspectRatio);
+			}
+            
+			setContent("PixelRatio", window.devicePixelRatio || window.screen.availWidth / document.documentElement.clientWidth);
+			
+			var resolutionRatio = window.devicePixelRatio || Math.sqrt(screen.deviceXDPI * screen.deviceYDPI) / one.dpi || 0;
+			setContent("ResolutionDpi", resolutionRatio * 96);
+			setContent("ResolutionDppx", resolutionRatio);
+			setContent("ResolutionDpcm", resolutionRatio * 96 / 2.54);
+			
+			let htmlElement = document.createElement("div");
+			document.body.appendChild(htmlElement);
+            setContent("RootFontSize", parseInt(window.getComputedStyle(htmlElement, null).getPropertyValue('font-size'), 10));
+			htmlElement.remove();
+        }
+
+        setSizes();
+
+        window.addEventListener("resize", setSizes);
+    </script>
+</details>
+
+<details open>
+    <summary>Browser features (Modernizr)</summary>
+    <ul id="BrowserFeatures"></ul>
+    <script>
+        let features = [{ "text": "Ambient Light Events", "test": "ambientlight" }, { "text": "Application Cache", "test": "applicationcache" }, { "text": "HTML5 Audio Element", "test": "audio" }, { "text": "Battery API", "test": "batteryapi" }, { "text": "Blob constructor", "test": "blobconstructor" }, { "text": "Canvas", "test": "canvas" }, { "text": "Canvas text", "test": "canvastext" }, { "text": "Content Editable", "test": "contenteditable" }, { "text": "Context menus", "test": "contextmenu" }, { "text": "Cookies", "test": "cookies" }, { "text": "Cross-Origin Resource Sharing", "test": "cors" }, { "text": "Web Cryptography", "test": "cryptography" }, { "text": "Custom Elements API", "test": "customelements" }, { "text": "Custom protocol handler", "test": "customprotocolhandler" }, { "text": "CustomEvent", "test": "customevent" }, { "text": "Dart", "test": "dart" }, { "text": "DataView", "test": "dataview" }, { "text": "Emoji", "test": "emoji" }, { "text": "Event Listener", "test": "eventlistener" }, { "text": "EXIF Orientation", "test": "exiforientation" }, { "text": "Flash", "test": "flash" }, { "text": "Force Touch Events", "test": "forcetouch" }, { "text": "Fullscreen API", "test": "fullscreen" }, { "text": "GamePad API", "test": "gamepads" }, { "text": "Geolocation API", "test": "geolocation" }, { "text": "Hashchange event", "test": "hashchange" }, { "text": "Hidden Scrollbar", "test": "hiddenscroll" }, { "text": "History API", "test": "history" }, { "text": "HTML Imports", "test": "htmlimports" }, { "text": "IE8 compat mode", "test": "ie8compat" }, { "text": "IndexedDB", "test": "indexeddb" }, { "text": "IndexedDB Blob", "test": "indexeddbblob" }, { "text": "Input attributes", "test": "input" }, { "text": "input[search] search event", "test": "search" }, { "text": "Form input types", "test": "inputtypes" }, { "text": "Internationalization API", "test": "intl" }, { "text": "JSON", "test": "json" }, { "text": "Font Ligatures", "test": "ligatures" }, { "text": "Reverse Ordered Lists", "test": "olreversed" }, { "text": "MathML", "test": "mathml" }, { "text": "Message Channel", "test": "MessageChannel" }, { "text": "Notification", "test": "notification" }, { "text": "Page Visibility API", "test": "pagevisibility" }, { "text": "Navigation Timing API", "test": "performance" }, { "text": "DOM Pointer Events API", "test": "pointerevents" }, { "text": "Pointer Lock API", "test": "pointerlock" }, { "text": "postMessage", "test": "postmessage" }, { "text": "Proximity API", "test": "proximity" }, { "text": "QuerySelector", "test": "queryselector" }, { "text": "Quota Storage Management API", "test": "quotamanagement" }, { "text": "requestAnimationFrame", "test": "requestanimationframe" }, { "text": "ServiceWorker API", "test": "serviceworker" }, { "text": "SVG", "test": "svg" }, { "text": "Template strings", "test": "templatestrings" }, { "text": "Touch Events", "test": "touchevents" }, { "text": "Typed arrays", "test": "typedarrays" }, { "text": "Unicode Range", "test": "unicoderange" }, { "text": "Unicode characters", "test": "unicode" }, { "text": "IE User Data API", "test": "userdata" }, { "text": "Vibration API", "test": "vibrate" }, { "text": "HTML5 Video", "test": "video" }, { "text": "VML", "test": "vml" }, { "text": "Web Intents", "test": "webintents" }, { "text": "Web Animation API", "test": "animation" }, { "text": "WebGL", "test": "webgl" }, { "text": "WebSockets Support", "test": "websockets" }, { "text": "XDomainRequest", "test": "xdomainrequest" }, { "text": "a[download] Attribute", "test": "adownload" }, { "text": "Audio Loop Attribute", "test": "audioloop" }, { "text": "Audio Preload", "test": "audiopreload" }, { "text": "Web Audio API", "test": "webaudio" }, { "text": "Low Battery Level", "test": "lowbattery" }, { "text": "canvas blending support", "test": "canvasblending" }, { "text": "canvas.toDataURL type support", "test": "todataurljpeg,todataurlpng,todataurlwebp" }, { "text": "canvas winding support", "test": "canvaswinding" }, { "text": "getRandomValues", "test": "getrandomvalues" }, { "text": "cssall", "test": "cssall" }, { "text": "CSS Animations", "test": "cssanimations" }, { "text": "Appearance", "test": "appearance" }, { "text": "Backdrop Filter", "test": "backdropfilter" }, { "text": "CSS Background Blend Mode", "test": "backgroundblendmode" }, { "text": "CSS Background Clip Text", "test": "backgroundcliptext" }, { "text": "Background Position Shorthand", "test": "bgpositionshorthand" }, { "text": "Background Position XY", "test": "bgpositionxy" }, { "text": "Background Repeat", "test": "bgrepeatspace,bgrepeatround" }, { "text": "Background Size", "test": "backgroundsize" }, { "text": "Background Size Cover", "test": "bgsizecover" }, { "text": "Border Image", "test": "borderimage" }, { "text": "Border Radius", "test": "borderradius" }, { "text": "Box Shadow", "test": "boxshadow" }, { "text": "Box Sizing", "test": "boxsizing" }, { "text": "CSS Calc", "test": "csscalc" }, { "text": "CSS :checked pseudo-selector", "test": "checked" }, { "text": "CSS Font ch Units", "test": "csschunit" }, { "text": "CSS Columns", "test": "csscolumns" }, { "text": "CSS Grid (old & new)", "test": "cssgrid,cssgridlegacy" }, { "text": "CSS Cubic Bezier Range", "test": "cubicbezierrange" }, { "text": "CSS Display run-in", "test": "display-runin" }, { "text": "CSS Display table", "test": "displaytable" }, { "text": "CSS text-overflow ellipsis", "test": "ellipsis" }, { "text": "CSS.escape()", "test": "cssescape" }, { "text": "CSS Font ex Units", "test": "cssexunit" }, { "text": "CSS Filters", "test": "cssfilters" }, { "text": "Flexbox", "test": "flexbox" }, { "text": "Flexbox (legacy)", "test": "flexboxlegacy" }, { "text": "Flexbox (tweener)", "test": "flexboxtweener" }, { "text": "Flex Line Wrapping", "test": "flexwrap" }, { "text": "@@font-face", "test": "fontface" }, { "text": "CSS Generated Content", "test": "generatedcontent" }, { "text": "CSS Gradients", "test": "cssgradients" }, { "text": "hairline", "test": "hairline" }, { "text": "CSS HSLA Colors", "test": "hsla" }, { "text": "CSS Hyphens", "test": "csshyphens,softhyphens,softhyphensfind" }, { "text": "CSS :invalid pseudo-class", "test": "cssinvalid" }, { "text": "CSS :last-child pseudo-selector", "test": "lastchild" }, { "text": "CSS Mask", "test": "cssmask" }, { "text": "CSS Media Queries", "test": "mediaqueries" }, { "text": "CSS Multiple Backgrounds", "test": "multiplebgs" }, { "text": "CSS :nth-child pseudo-selector", "test": "nthchild" }, { "text": "CSS Object Fit", "test": "objectfit" }, { "text": "CSS Opacity", "test": "opacity" }, { "text": "CSS Overflow Scrolling", "test": "overflowscrolling" }, { "text": "CSS Pointer Events", "test": "csspointerevents" }, { "text": "CSS position: sticky", "test": "csspositionsticky" }, { "text": "CSS Generated Content Animations", "test": "csspseudoanimations" }, { "text": "CSS Generated Content Transitions", "test": "csspseudotransitions" }, { "text": "CSS Reflections", "test": "cssreflections" }, { "text": "CSS Regions", "test": "regions" }, { "text": "CSS Font rem Units", "test": "cssremunit" }, { "text": "CSS UI Resize", "test": "cssresize" }, { "text": "CSS rgba", "test": "rgba" }, { "text": "CSS Stylable Scrollbars", "test": "cssscrollbar" }, { "text": "Scroll Snap Points", "test": "scrollsnappoints" }, { "text": "CSS Shapes", "test": "shapes" }, { "text": "CSS general sibling selector", "test": "siblinggeneral" }, { "text": "CSS Subpixel Fonts", "test": "subpixelfont" }, { "text": "CSS Supports", "test": "supports" }, { "text": "CSS :target pseudo-class", "test": "target" }, { "text": "CSS text-align-last", "test": "textalignlast" }, { "text": "CSS textshadow", "test": "textshadow" }, { "text": "CSS Transforms", "test": "csstransforms" }, { "text": "CSS Transforms 3D", "test": "csstransforms3d" }, { "text": "CSS Transforms Level 2", "test": "csstransformslevel2" }, { "text": "CSS Transform Style preserve-3d", "test": "preserve3d" }, { "text": "CSS Transitions", "test": "csstransitions" }, { "text": "CSS user-select", "test": "userselect" }, { "text": "CSS :valid pseudo-class", "test": "cssvalid" }, { "text": "CSS vh unit", "test": "cssvhunit" }, { "text": "CSS vmax unit", "test": "cssvmaxunit" }, { "text": "CSS vmin unit", "test": "cssvminunit" }, { "text": "CSS vw unit", "test": "cssvwunit" }, { "text": "will-change", "test": "willchange" }, { "text": "CSS wrap-flow", "test": "wrapflow" }, { "text": "classList", "test": "classlist" }, { "text": "createElement with Attributes", "test": "createelementattrs,createelement-attrs" }, { "text": "dataset API", "test": "dataset" }, { "text": "Document Fragment", "test": "documentfragment" }, { "text": "[hidden] Attribute", "test": "hidden" }, { "text": "microdata", "test": "microdata" }, { "text": "DOM4 MutationObserver", "test": "mutationobserver" }, { "text": "Passive event listeners", "test": "passiveeventlisteners" }, { "text": "bdi Element", "test": "bdi" }, { "text": "datalist Element", "test": "datalistelem" }, { "text": "details Element", "test": "details" }, { "text": "output Element", "test": "outputelem" }, { "text": "picture Element", "test": "picture" }, { "text": "progress Element", "test": "progressbar,meter" }, { "text": "ruby, rp, rt Elements", "test": "ruby" }, { "text": "Template Tag", "test": "template" }, { "text": "time Element", "test": "time" }, { "text": "Track element and Timed Text Track", "test": "texttrackapi,track" }, { "text": "Unknown Elements", "test": "unknownelements" }, { "text": "ES5 Array", "test": "es5array" }, { "text": "ES5 Date", "test": "es5date" }, { "text": "ES5 Function", "test": "es5function" }, { "text": "ES5 Object", "test": "es5object" }, { "text": "ES5", "test": "es5" }, { "text": "ES5 Strict Mode", "test": "strictmode" }, { "text": "ES5 String", "test": "es5string" }, { "text": "ES5 Syntax", "test": "es5syntax" }, { "text": "ES5 Immutable Undefined", "test": "es5undefined" }, { "text": "ES6 Array", "test": "es6array" }, { "text": "ES6 Arrow Functions", "test": "arrow" }, { "text": "ES6 Collections", "test": "es6collections" }, { "text": "ES5 String.prototype.contains", "test": "contains" }, { "text": "ES6 Generators", "test": "generators" }, { "text": "ES6 Math", "test": "es6math" }, { "text": "ES6 Number", "test": "es6number" }, { "text": "ES6 Object", "test": "es6object" }, { "text": "ES6 Promises", "test": "promises" }, { "text": "ES6 String", "test": "es6string" }, { "text": "Orientation and Motion Events", "test": "devicemotion,deviceorientation" }, { "text": "onInput Event", "test": "oninput" }, { "text": "File API", "test": "filereader" }, { "text": "Filesystem API", "test": "filesystem" }, { "text": "input[capture] Attribute", "test": "capture" }, { "text": "input[file] Attribute", "test": "fileinput" }, { "text": "input[directory] Attribute", "test": "directory" }, { "text": "input[form] Attribute", "test": "formattribute" }, { "text": "input[type=\"number\"] Localization", "test": "localizednumber" }, { "text": "placeholder attribute", "test": "placeholder" }, { "text": "form#requestAutocomplete()", "test": "requestautocomplete" }, { "text": "Form Validation", "test": "formvalidation" }, { "text": "iframe[sandbox] Attribute", "test": "sandbox" }, { "text": "iframe[seamless] Attribute", "test": "seamless" }, { "text": "iframe[srcdoc] Attribute", "test": "srcdoc" }, { "text": "Animated PNG", "test": "apng" }, { "text": "Image crossOrigin", "test": "imgcrossorigin" }, { "text": "JPEG 2000", "test": "jpeg2000" }, { "text": "JPEG XR (extended range)", "test": "jpegxr" }, { "text": "sizes attribute", "test": "sizes" }, { "text": "srcset attribute", "test": "srcset" }, { "text": "Webp Alpha", "test": "webpalpha" }, { "text": "Webp Animation", "test": "webpanimation" }, { "text": "Webp Lossless", "test": "webplossless,webp-lossless" }, { "text": "Webp", "test": "webp" }, { "text": "input formaction", "test": "inputformaction" }, { "text": "input formenctype", "test": "inputformenctype" }, { "text": "input formmethod", "test": "inputformmethod" }, { "text": "input formtarget", "test": "inputformtarget" }, { "text": "Hover Media Query", "test": "hovermq" }, { "text": "Pointer Media Query", "test": "pointermq" }, { "text": "Beacon API", "test": "beacon" }, { "text": "Low Bandwidth Connection", "test": "lowbandwidth" }, { "text": "Server Sent Events", "test": "eventsource" }, { "text": "Fetch API", "test": "fetch" }, { "text": "XHR responseType='arraybuffer'", "test": "xhrresponsetypearraybuffer" }, { "text": "XHR responseType='blob'", "test": "xhrresponsetypeblob" }, { "text": "XHR responseType='document'", "test": "xhrresponsetypedocument" }, { "text": "XHR responseType='json'", "test": "xhrresponsetypejson" }, { "text": "XHR responseType='text'", "test": "xhrresponsetypetext" }, { "text": "XHR responseType", "test": "xhrresponsetype" }, { "text": "XML HTTP Request Level 2 XHR2", "test": "xhr2" }, { "text": "script[async]", "test": "scriptasync" }, { "text": "script[defer]", "test": "scriptdefer" }, { "text": "Speech Recognition API", "test": "speechrecognition" }, { "text": "Speech Synthesis API", "test": "speechsynthesis" }, { "text": "Local Storage", "test": "localstorage" }, { "text": "Session Storage", "test": "sessionstorage" }, { "text": "Web SQL Database", "test": "websqldatabase" }, { "text": "style[scoped]", "test": "stylescoped" }, { "text": "SVG as an <img> tag source", "test": "svgasimg" }, { "text": "SVG clip paths", "test": "svgclippaths" }, { "text": "SVG filters", "test": "svgfilters" }, { "text": "SVG foreignObject", "test": "svgforeignobject" }, { "text": "Inline SVG", "test": "inlinesvg" }, { "text": "SVG SMIL animation", "test": "smil" }, { "text": "textarea maxlength", "test": "textareamaxlength" }, { "text": "Blob URLs", "test": "bloburls" }, { "text": "Data URI", "test": "datauri" }, { "text": "URL parser", "test": "urlparser" }, { "text": "URLSearchParams API", "test": "urlsearchparams" }, { "text": "Video Autoplay", "test": "videoautoplay" }, { "text": "Video crossOrigin", "test": "videocrossorigin" }, { "text": "Video Loop Attribute", "test": "videoloop" }, { "text": "Video Preload Attribute", "test": "videopreload" }, { "text": "WebGL Extensions", "test": "webglextensions" }, { "text": "RTC Data Channel", "test": "datachannel" }, { "text": "getUserMedia", "test": "getusermedia" }, { "text": "RTC Peer Connection", "test": "peerconnection" }, { "text": "Binary WebSockets", "test": "websocketsbinary" }, { "text": "Base 64 encoding/decoding", "test": "atobbtoa" }, { "text": "Framed window", "test": "framed" }, { "text": "matchMedia", "test": "matchmedia" }, { "text": "Workers from Blob URIs", "test": "blobworkers" }, { "text": "Workers from Data URIs", "test": "dataworkers" }, { "text": "Shared Workers", "test": "sharedworkers" }, { "text": "Transferables Objects", "test": "transferables" }, { "text": "Web Workers", "test": "webworkers" }];
+        var featureElement = document.getElementById("BrowserFeatures");
+        if (featureElement) {
+            for (const feature of features) {
+                let result = Modernizr[feature.test];
+                addFeature(featureElement, feature.text, result);
+            }
+        }
+
+        function addFeature(container, text, result) {
+            if (result !== null && typeof result === "object") {
+                var keys = Object.keys(result);
+                for (let key of keys) {
+                    addFeature(container, text + " - " + key, result[key]);
+                }
+                return;
+            }
+
+            const li = document.createElement("li");
+            if (typeof result === "boolean") {
+                li.textContent = text + ": " + result;
+                li.classList.add(result ? "feature-available" : "feature-notavailable")
+            } else if (typeof result === "undefined") {
+                li.textContent = text + ": unknown";
+            } else {
+                li.textContent = text + ": " + JSON.stringify(result);
+            }
+            container.appendChild(li);
+        }
+    </script>
+</details>
+
+<style>
+    summary {
+        font-size: 28px;
+    }
+
+    .feature-available {
+        color: green;
+    }
+
+    .feature-notavailable {
+        color: darkred;
+    }
+</style>

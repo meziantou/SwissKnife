@@ -1,0 +1,41 @@
+﻿@page
+@functions {
+    public string Value { get; set; }
+    public string FormattedValue { get; set; }
+
+    public IActionResult OnPost(string value)
+    {
+        Value = value;
+        if (value != null)
+        {
+            try
+            {
+                var json = Newtonsoft.Json.JsonConvert.DeserializeObject(value);
+                FormattedValue = Newtonsoft.Json.JsonConvert.SerializeObject(json, Newtonsoft.Json.Formatting.Indented);
+            }
+            catch (Newtonsoft.Json.JsonReaderException)
+            {
+                FormattedValue = "Invalid input";
+            }
+        }
+        return Page();
+    }
+}
+<h1>JSON Formatter</h1>
+
+<form method="post">
+    <div class="form-group">
+        <textarea type="text" name="value" class="form-control">@Value</textarea>
+        <button type="submit" class="btn btn-primary">Parse</button>
+    </div>
+</form>
+
+@if (!string.IsNullOrEmpty(FormattedValue))
+{
+<pre><code class="language-json">@FormattedValue</code></pre>
+}
+
+@section Scripts {
+    <link asp-append-version="true" href="~/lib/prismjs/prism.css" rel="stylesheet" />
+    <script asp-append-version="true" src="~/lib/prismjs/prism.js"></script>
+}

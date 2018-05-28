@@ -1,14 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.3
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Meziantou.SwissKnife", "Meziantou.SwissKnife\Meziantou.SwissKnife.csproj", "{9A2B31E1-8514-4163-8F79-393D3641AC33}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F100EED3-E3FF-4A1D-952A-C052B88598E8}"
-	ProjectSection(SolutionItems) = preProject
-		WebEssentials-Settings.json = WebEssentials-Settings.json
-	EndProjectSection
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Meziantou.SwissKnife", "Meziantou.SwissKnife\Meziantou.SwissKnife.csproj", "{A610094D-8AEF-44B8-B96A-18C684DC5510}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -16,12 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{9A2B31E1-8514-4163-8F79-393D3641AC33}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9A2B31E1-8514-4163-8F79-393D3641AC33}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9A2B31E1-8514-4163-8F79-393D3641AC33}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9A2B31E1-8514-4163-8F79-393D3641AC33}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A610094D-8AEF-44B8-B96A-18C684DC5510}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A610094D-8AEF-44B8-B96A-18C684DC5510}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A610094D-8AEF-44B8-B96A-18C684DC5510}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A610094D-8AEF-44B8-B96A-18C684DC5510}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C44E79EF-6812-41E8-B4BA-C0D575799B2E}
 	EndGlobalSection
 EndGlobal

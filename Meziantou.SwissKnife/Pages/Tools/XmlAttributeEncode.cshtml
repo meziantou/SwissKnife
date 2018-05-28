@@ -1,0 +1,41 @@
+﻿@page
+@functions {
+    public string Value { get; set; }
+    public string EncodedValue { get; set; }
+
+    public IActionResult OnPostEncode(string value)
+    {
+        Value = value;
+        if (value != null)
+        {
+            var xml = new System.Xml.Linq.XElement("Data", new System.Xml.Linq.XAttribute("attr", value)).ToString();
+            EncodedValue= xml.Substring("<Data attr=\"".Length, xml.Length - ("<Data attr=\"".Length + "\" />".Length));
+        }
+        return Page();
+    }
+
+    public IActionResult OnPostDecode(string value)
+    {
+        Value = value;
+        if (value != null)
+        {
+            var attribute = System.Xml.Linq.XElement.Parse("<Data attr=\"" + value + "\" />").Attribute("attr");
+            EncodedValue = attribute.Value;
+        }
+        return Page();
+    }
+}
+<h1>XML Attribute Encode</h1>
+
+<form method="post">
+    <div class="form-group">
+        <textarea type="text" name="value" class="form-control">@Value</textarea>
+        <button type="submit" asp-page-handler="Encode" class="btn btn-default">Encode</button>
+        <button type="submit" asp-page-handler="Decode" class="btn btn-default">Decode</button>
+    </div>
+</form>
+
+@if (!string.IsNullOrEmpty(EncodedValue))
+{
+<pre><code>@EncodedValue</code></pre>
+}

@@ -1,0 +1,43 @@
+﻿@page
+@functions {
+    public Guid GuidValue { get; set; }
+    public string StringValue { get; set; }
+
+    public IActionResult OnGet(string value)
+    {
+        StringValue = value;
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            GuidValue = Guid.Empty;
+        }
+        else if (Guid.TryParse(value, out var g))
+        {
+            GuidValue = g;
+        }
+        else
+        {
+            value = System.Text.RegularExpressions.Regex.Replace(value, "[^0-9A-F]", "");
+            if (Guid.TryParse(value, out g))
+            {
+                GuidValue = g;
+            }
+        }
+        return Page();
+    }
+}
+<h1>Guid Parser</h1>
+
+<form method="get">
+    <div class="form-group">
+        <input type="text" name="value" class="form-control" value="@StringValue" />
+        <button type="submit" class="btn btn-primary">Parse</button>
+    </div>
+    
+    <ul>
+        <li>@GuidValue.ToString("N")</li>
+        <li>@GuidValue.ToString("D")</li>
+        <li>@GuidValue.ToString("B")</li>
+        <li>@GuidValue.ToString("P")</li>
+        <li>@GuidValue.ToString("X")</li>
+    </ul>
+</form>

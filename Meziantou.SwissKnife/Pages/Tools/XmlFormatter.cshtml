@@ -1,0 +1,49 @@
+﻿@page
+@functions {
+    public string Value { get; set; }
+    public string FormattedValue { get; set; }
+
+    public IActionResult OnPost(string value)
+    {
+        Value = value;
+        if (value != null)
+        {
+            try
+            {
+                var xml = System.Xml.Linq.XDocument.Parse(value);
+                var sb = new System.Text.StringBuilder();
+                var settings = new System.Xml.XmlWriterSettings();
+                settings.Indent = true;
+                settings.IndentChars = "  ";
+                using (var writer = System.Xml.XmlWriter.Create(sb, settings))
+                {
+                    xml.Save(writer);
+                }
+                FormattedValue = sb.ToString();
+            }
+            catch
+            {
+                FormattedValue = "Invalid input";
+            }
+        }
+        return Page();
+    }
+}
+<h1>XML Formatter</h1>
+
+<form method="post">
+    <div class="form-group">
+        <textarea type="text" name="value" class="form-control">@Value</textarea>
+        <button type="submit" class="btn btn-primary">Parse</button>
+    </div>
+</form>
+
+@if (!string.IsNullOrEmpty(FormattedValue))
+{
+<pre><code class="language-xml">@FormattedValue</code></pre>
+}
+
+@section Scripts {
+    <link asp-append-version="true" href="~/lib/prismjs/prism.css" rel="stylesheet" />
+    <script asp-append-version="true" src="~/lib/prismjs/prism.js"></script>
+}

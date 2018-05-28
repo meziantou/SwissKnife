@@ -1,0 +1,15 @@
+﻿@page
+@{
+    var guid = Guid.NewGuid();
+}
+<h1>Guid Generator</h1>
+
+<ul>
+    <li>@guid.ToString("N")</li>
+    <li>@guid.ToString("D")</li>
+    <li>@guid.ToString("B")</li>
+    <li>@guid.ToString("P")</li>
+    <li>@guid.ToString("X")</li>
+</ul>
+
+<a href="" class="btn btn-default">Generate</a>
